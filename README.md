@@ -1,2 +1,2 @@
 # platform-training
-R&F Activities
+R&D Activities
