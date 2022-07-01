@@ -45,7 +45,7 @@ def main():
                               host=host, db=db_name)
 
     with cnx.cursor() as cursor:
-        cursor.execute('YOUR QUERY GOES HERE;')
+        cursor.execute('SELECT text FROM appEngineMessages;') # This line executes the query for now it retrieves the text stored in the database
         result = cursor.fetchall()
         current_msg = result[0][0]
     cnx.close()
