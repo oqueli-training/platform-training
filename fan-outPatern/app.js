@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 const emailService = require('./emailService');
 const dbService = require('./dbService');
 
-const project = 'my-pet-project-285907'; // Your GCP Project id
-const location = 'asia-east2'; // The GCP region of your queue
+const project = 'YOUR GCP PROJECT ID'; // Your GCP Project id
+const location = 'YOUR LOCATION'; // The GCP region of your queue
 const senderTaskQueueName = 'email-sender';
 
 const subject = `You've got mail!`;
