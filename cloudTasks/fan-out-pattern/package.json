@@ -1,0 +1,21 @@
+{
+  "name": "appengine-cron",
+  "description": "App Engine Demo for Cloud Scheduler",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "author": "Albert Padin",
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@google-cloud/tasks": "^2.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.16.3",
+    "mysql2": "^2.1.0"
+  },
+  "devDependencies": {}
+}
