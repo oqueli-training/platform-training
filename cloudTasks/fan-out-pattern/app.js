@@ -17,6 +17,11 @@ const senderTaskQueueName = 'email-sender';
 const subject = `You've got mail!`;
 const emailBody = 'Hello!';
 
+const {CloudTasksClient} = require('@google-cloud/tasks');
+
+// Instantiates a client.
+const client = new CloudTasksClient();
+
 /**
  * Create a task for a given queue with an arbitrary payload.
  */
@@ -25,40 +30,36 @@ async function createTask(
   payload = null, // The task HTTP request body
   path = '/',
   inSeconds = 0 // Delay in task execution
-) {
-  const {CloudTasksClient} = require('@google-cloud/tasks');
+  ) {
+  
+    // Construct the fully qualified queue name.
+    const parent = client.queuePath(project, location, queue);
 
-  // Instantiates a client.
-  const client = new CloudTasksClient();
-
-  // Construct the fully qualified queue name.
-  const parent = client.queuePath(project, location, queue);
-
-  const task = {
-    appEngineHttpRequest: {
-      httpMethod: 'POST',
-      relativeUri: path,
-    },
-  };
-
-  if (payload) {
-    task.appEngineHttpRequest.body = Buffer.from(JSON.stringify(payload)).toString('base64');
-  }
-
-  if (inSeconds) {
-    // The time when the task is scheduled to be attempted.
-    task.scheduleTime = {
-      seconds: inSeconds + Date.now() / 1000,
+    const task = {
+      appEngineHttpRequest: {
+        httpMethod: 'POST',
+        relativeUri: path,
+      },
     };
-  }
 
-  console.log('Sending task:');
-  console.log(task);
-  // Send create task request.
-  const request = {parent, task};
-  const [response] = await client.createTask(request);
-  const name = response.name;
-  console.log(`Created task ${name}`);
+    if (payload) {
+      task.appEngineHttpRequest.body = Buffer.from(JSON.stringify(payload)).toString('base64');
+    }
+
+    if (inSeconds) {
+      // The time when the task is scheduled to be attempted.
+      task.scheduleTime = {
+        seconds: inSeconds + Date.now() / 1000,
+      };
+    }
+
+    console.log('Sending task:');
+    //console.log(task);
+    // Send create task request.
+    const request = {parent, task};
+    const [response] = await client.createTask(request);
+    const name = response.name;
+    console.log(`Created task ${name}`);
 }
 
 const rawBodySaver = (req, res, buf, encoding) => {
@@ -67,14 +68,16 @@ const rawBodySaver = (req, res, buf, encoding) => {
   }
 };
 
+/*
 app.use(bodyParser.json({ verify: rawBodySaver }));
 app.use(bodyParser.urlencoded({ verify: rawBodySaver, extended: true }));
 app.use(bodyParser.raw({ verify: rawBodySaver, type: function () { return true } }));
+*/
 
 app.get('/', async (req, res) => {
   res
     .status(200)
-    .send('Hello World!')
+    .send('This is just the front page')
     .end();
 });
 
@@ -110,10 +113,11 @@ app.get('/create-send-email-tasks', async (req, res) => {
 });
 
 app.post('/send-email', (req, res) => {
-  console.log('body', req);
-  const emailAddress = req.body.email;
-  const emailSubject = req.body.subject;
-  const emailContent = req.body.emailBody;
+  console.log('Executing Sending email');
+  const payload = JSON.parse(req.body.toString());
+  const emailAddress = payload.email;
+  const emailSubject = payload.subject;
+  const emailContent = payload.emailBody;
 
   emailService.sendEmail(emailAddress, emailSubject, emailContent);
 
