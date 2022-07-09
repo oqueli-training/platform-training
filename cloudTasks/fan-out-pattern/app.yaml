@@ -1,4 +1,4 @@
-runtime: nodejs10
+runtime: nodejs16
 
 env_variables:
   CLOUD_SQL_CONNECTION_NAME: "my-pet-project-285907:us-west2:my-pet-project-database"
