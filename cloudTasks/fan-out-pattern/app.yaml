@@ -1,8 +1,0 @@
-runtime: nodejs16
-service: fan-out-pattern
-
-env_variables:
-  CLOUD_SQL_CONNECTION_NAME: "my-pet-project-285907:us-west2:my-pet-project-database"
-  DB_USER: "root"
-  DB_PASS: "jAkFyBxjpUYp4bGP"
-  DB_NAME: "my_db"
