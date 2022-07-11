@@ -2,7 +2,7 @@ runtime: nodejs16
 service: task-creator
 
 env_variables:
-  CLOUD_SQL_CONNECTION_NAME: "x-landing-352620:us-central1:test-id"
-  DB_USER: "appEngine"
-  DB_PASS: "test1234"
-  DB_NAME: "appEngineConnection"
+  CLOUD_SQL_CONNECTION_NAME: "YOUR_CONNECTION_NAME"
+  DB_USER: "YOUR DB USER"
+  DB_PASS: "YOUR PASSWORD"
+  DB_NAME: "YOUR DATABASE"
